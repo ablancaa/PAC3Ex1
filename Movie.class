@@ -1,0 +1,107 @@
+package edu.uoc.pac3;
+
+import java.time.LocalDate;
+import java.util.UUID;
+
+public class Movie {
+    private String id;
+    private String title;
+    private String summary;
+    private int duration;
+    private LocalDate releaseDate;
+    private boolean ov;
+    private Trailer trailer;
+
+    private static final int MAX_SUMMARY_LENGTH = 450;
+    public static final String ERR_DURATION = "[ERROR] The duration of the movie cannot be 0 or negative";
+    public static final String ERR_SUMMARY_LENGTH="[ERROR] Summary's cannot be greater than "+MAX_SUMMARY_LENGTH+" characters";
+
+    public Movie(String title, String summary, int duration, LocalDate releaseDate, boolean ov) {
+        setId();
+        this.title = title;
+        this.summary = summary;
+        this.duration = duration;
+        this.releaseDate = releaseDate;
+        this.ov = ov;
+        this.trailer = null;
+    }
+
+    public Movie (String title, String summaryNew, int duration, LocalDate releaseDate, boolean ov, String url,
+                 int trailerDuration, LocalDate trailerReleaseDate) {
+        setId();
+        this.title = title;
+        this.summary = summaryNew;
+        this.duration = duration;
+        this.releaseDate = releaseDate;
+        this.ov = ov;
+        //this.trailer = new Trailer (url, trailerDuration, trailerReleaseDate);
+        setTrailer(url,trailerDuration,trailerReleaseDate);
+
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    private void setId() {
+        UUID uuid = UUID.randomUUID();
+        this.id = uuid.toString();
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public void setSummary(String summaryNew) throws Exception{
+        int size = summaryNew.length();
+        if (size > MAX_SUMMARY_LENGTH) {
+            throw new Exception(ERR_SUMMARY_LENGTH);
+        } else{
+            this.summary = summaryNew;
+        }
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int durationNew) throws Exception {
+        if (durationNew <= 0){
+            throw new Exception(ERR_DURATION);
+        } else {
+            this.duration = durationNew;
+        }
+
+    }
+
+    public LocalDate getReleaseDate() {
+        return releaseDate;
+    }
+
+    public void setReleaseDate(LocalDate releaseDate) {
+        this.releaseDate = releaseDate;
+    }
+
+    public boolean isOv() {
+        return ov;
+    }
+
+    public void setOv(boolean ov) {
+        this.ov = ov;
+    }
+
+    public Trailer getTrailer() { return trailer; }
+
+    public void setTrailer (String urlNew, int durationNew, LocalDate releaseDateNew) {
+       this.trailer = new Trailer(urlNew, durationNew, releaseDateNew);
+
+    }
+}
